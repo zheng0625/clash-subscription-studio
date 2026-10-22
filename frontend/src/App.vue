@@ -315,7 +315,7 @@ async function deleteSub(){
     <aside class="sidebar" :class="{open:sidebarOpen}" :inert="modal||aiDialog">
       <a class="brand" href="/" :aria-label="t('Clash Studio 首页')"><span class="brand-mark"><Waypoints :size="23"/></span><span>Clash<span class="brand-light"> Studio</span></span></a>
       <button class="sidebar-close icon-button" :aria-label="t('收起侧栏')" @click="sidebarOpen=false"><PanelLeftClose :size="18"/></button>
-      <div class="workspace-label"><span class="live-dot"></span>{{ t('本地工作空间') }}<span class="version">v0.4.1 RC1</span></div>
+      <div class="workspace-label"><span class="live-dot"></span>{{ t('本地工作空间') }}<span class="version">v0.4.1</span></div>
       <div class="sidebar-section-title"><span>{{ t('我的订阅') }}</span><span>{{ subs.length.toString().padStart(2,'0') }}</span></div>
       <nav class="subscription-nav" :aria-label="t('订阅列表')">
         <button v-for="s in subs" :key="s.id" class="subscription-item" :class="{active:current?.id===s.id}" :disabled="busy" @click="selectSub(s.id)">

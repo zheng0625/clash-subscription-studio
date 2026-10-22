@@ -4,9 +4,9 @@
 
 一个运行在本机的 Clash / Mihomo 订阅可视化编辑与分发工具：把节点、代理组和分流规则放在同一张工作台上，刷新源订阅时重新应用自己的修改，再生成供本机或局域网设备使用的订阅地址。
 
-**下一版：v0.4.1-rc.1 · 中英双语与跨平台原生包，等待候选包验收。**
+**版本：v0.4.1 · 正式发行版，中英双语与跨平台原生包。**
 
-[已发布版本](https://github.com/zheng0625/clash-subscription-studio/releases) · [源码仓库](https://github.com/zheng0625/clash-subscription-studio) · [原生包说明](docs/native-packages.md)
+[下载 v0.4.1](https://github.com/zheng0625/clash-subscription-studio/releases/tag/v0.4.1) · [源码仓库](https://github.com/zheng0625/clash-subscription-studio) · [原生包说明](docs/native-packages.md)
 
 ## 功能
 

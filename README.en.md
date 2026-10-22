@@ -4,9 +4,9 @@
 
 A local visual editor and subscription server for Clash / Mihomo. Manage proxy nodes, groups and routing rules in one workspace, reapply your edits when the upstream subscription refreshes, and serve the published result to this computer or devices on your LAN.
 
-**Next version: v0.4.1-rc.1 — bilingual UI and native packages, awaiting candidate acceptance.**
+**Version: v0.4.1 — stable release with bilingual UI and native packages.**
 
-[Published releases](https://github.com/zheng0625/clash-subscription-studio/releases) · [Source repository](https://github.com/zheng0625/clash-subscription-studio) · [Native package guide](docs/native-packages.md#english)
+[Download v0.4.1](https://github.com/zheng0625/clash-subscription-studio/releases/tag/v0.4.1) · [Source repository](https://github.com/zheng0625/clash-subscription-studio) · [Native package guide](docs/native-packages.md#english)
 
 ## Features
 
