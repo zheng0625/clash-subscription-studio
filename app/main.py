@@ -23,8 +23,10 @@ from .ai_rules import catalogue
 from .ai_preset import create_ai_draft
 from .lan import LanController, build_lan_app, is_lan_ipv4
 from .store import StaleRevision, Store, now
+from .paths import RESOURCE_ROOT, default_data_dir, instance_id
+from .version import VERSION
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = RESOURCE_ROOT
 # Subscription panels commonly select their output from the client User-Agent.
 # Match the official Clash Verge Rev subscription request format, rather than
 # the previous unrecognised "ClashStudio/0.1 mihomo" identifier.
@@ -164,7 +166,7 @@ def fetch_source(url: str):
 
 
 def create_app(data_dir: Path | None = None):
-    store = Store(data_dir or Path(os.getenv("CLASH_STUDIO_DATA", str(ROOT / "data"))))
+    store = Store(data_dir or default_data_dir())
 
     def get_row(sub_id):
         row = store.get(sub_id)
@@ -239,7 +241,7 @@ def create_app(data_dir: Path | None = None):
                 pass
             await network.close()
 
-    app = FastAPI(title="Clash Studio", version="0.4.0-rc.1", lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
+    app = FastAPI(title="Clash Studio", version=VERSION, lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.store = store
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "testserver", "[::1]"])
 
@@ -271,8 +273,18 @@ def create_app(data_dir: Path | None = None):
 
     @app.get("/api/health")
     def health():
-        return {"app": "clash-studio", "status": "ok", "version": "0.4.0-rc.1", "mode": "local",
-                "pid": os.getpid(), "instance": hashlib.sha256(str(ROOT).casefold().encode()).hexdigest()[:16]}
+        return {"app": "clash-studio", "status": "ok", "version": VERSION, "mode": "local",
+                "pid": os.getpid(), "instance": instance_id(), "data_dir": str(store.path.parent)}
+
+    @app.post("/api/shutdown")
+    async def shutdown(request: Request):
+        if not request.client or request.client.host not in ("127.0.0.1", "::1"):
+            raise HTTPException(403, "Shutdown requires a loopback connection")
+        callback = getattr(app.state, "shutdown_callback", None)
+        if callback is None:
+            raise HTTPException(503, "Shutdown is available only through the application launcher")
+        asyncio.get_running_loop().call_later(0.2, callback)
+        return {"status": "stopping"}
 
     @app.get("/api/network")
     def get_network():

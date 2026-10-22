@@ -1,0 +1,58 @@
+name: Native packages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/v0.4.1]
+    paths-ignore: ['docs/**', '**.md']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {runner: windows-2022, platform: windows-x64}
+          - {runner: ubuntu-22.04, platform: linux-x64}
+          - {runner: ubuntu-24.04-arm, platform: linux-arm64}
+          - {runner: macos-15-intel, platform: macos-x64}
+          - {runner: macos-15, platform: macos-arm64}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Install locked frontend dependencies
+        working-directory: frontend
+        run: npx --yes pnpm@10.28.2 install --frozen-lockfile
+      - name: Build bilingual interface
+        working-directory: frontend
+        run: npx --yes pnpm@10.28.2 run build
+      - name: Install build dependencies
+        run: python -m pip install -r requirements-build.txt
+      - name: Build native package with bundled runtime and source
+        run: python scripts/build_native.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ClashStudio-${{ matrix.platform }}
+          path: |
+            releases/*-${{ matrix.platform }}.zip
+            releases/*-${{ matrix.platform }}.zip.sha256
+            releases/*-${{ matrix.platform }}.tar.gz
+            releases/*-${{ matrix.platform }}.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 30

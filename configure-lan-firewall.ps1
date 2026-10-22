@@ -1,6 +1,8 @@
 param([switch]$Remove, [switch]$Elevated)
 $ErrorActionPreference = 'Stop'
 $networkFile = Join-Path $PSScriptRoot 'data\network.json'
+if ($env:CLASH_STUDIO_DATA) { $networkFile = Join-Path $env:CLASH_STUDIO_DATA 'network.json' }
+elseif (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'ClashStudio.exe')) { $networkFile = Join-Path $env:LOCALAPPDATA 'ClashStudio\network.json' }
 if (-not (Test-Path -LiteralPath $networkFile)) { throw 'Enable LAN sharing in the app before configuring the firewall.' }
 $settings = Get-Content -LiteralPath $networkFile -Raw -Encoding UTF8 | ConvertFrom-Json
 $lanPort = [int]$settings.port
