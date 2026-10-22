@@ -2,7 +2,9 @@
 
 可视化编辑 Clash / Mihomo 订阅：导入配置、调整节点和代理组、编辑分流规则，再生成供本机或局域网设备使用的订阅地址。
 
-**版本：v0.4.0-rc.1 · 发行候选版，等待手动测试。**
+**版本：v0.4.0-rc.1 · 已通过用户手动测试并公开发布（预发布版）。**
+
+[下载发行包](https://github.com/zheng0625/clash-subscription-studio/releases/tag/v0.4.0-rc.1) · [源码仓库](https://github.com/zheng0625/clash-subscription-studio)
 
 ## 功能
 

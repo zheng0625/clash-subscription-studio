@@ -2,7 +2,7 @@
 
 ## 0.4.0-rc.1
 
-First open-source release candidate. Awaiting manual acceptance before GitHub publication.
+First open-source release candidate. User acceptance confirmed and published on 2026-10-22. The uploaded ZIP is unchanged from the tested candidate.
 
 - Import Clash / Mihomo YAML from URL, local file or built-in example.
 - Edit nodes, proxy groups and routing rules, then publish a token-protected subscription.
