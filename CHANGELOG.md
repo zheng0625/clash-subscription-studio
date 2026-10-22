@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1-rc.1 (candidate)
+
+- Add English UI, automatic browser-language detection and a persistent language selector.
+- Translate controls, dialogs, notifications, accessibility labels and application diagnostics while preserving user YAML and names.
+- Add Windows x64, Linux x64/ARM64 and macOS Intel/Apple Silicon native build targets with bundled Python, dependencies, frontend and corresponding source.
+- Add cross-platform launch/stop commands, persistent per-user native data paths, migration guidance and English project statements/credits.
+- Candidate acceptance is required before a new public release. CI build output is not equivalent to physical-device testing.
+
 ## 0.4.0-rc.1
 
 First open-source release candidate. User acceptance confirmed and published on 2026-10-22. The uploaded ZIP is unchanged from the tested candidate.

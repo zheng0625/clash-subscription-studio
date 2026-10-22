@@ -6,5 +6,8 @@
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.command text eol=lf
 *.ps1 text eol=crlf
 *.cmd text eol=crlf

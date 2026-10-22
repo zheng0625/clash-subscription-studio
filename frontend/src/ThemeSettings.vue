@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { t } from './i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { Palette, X, RotateCcw, Check } from 'lucide-vue-next'
 
@@ -41,14 +43,14 @@ onMounted(apply)
 </script>
 
 <template>
-  <button class="theme-open" @click="dialog?.showModal()" title="自定义界面配色"><Palette :size="15"/><span>配色</span></button>
+  <button class="theme-open" @click="dialog?.showModal()" :title="t('自定义界面配色')"><Palette :size="15"/><span>{{ t('配色') }}</span></button>
   <dialog ref="dialog" class="theme-dialog" aria-labelledby="theme-title" @click="($event.target===dialog)&&dialog?.close()">
-    <header><div><span class="theme-eyebrow">APPEARANCE</span><h2 id="theme-title">自定义配色</h2></div><button class="icon-button" aria-label="关闭配色设置" @click="dialog?.close()"><X :size="19"/></button></header>
-    <p class="theme-description">选择一个起点，再调整成你喜欢的颜色。</p>
-    <div class="theme-presets"><button v-for="preset in presets" :key="preset.name" :aria-pressed="activePreset===preset.name" @click="theme={...preset.colors}"><span class="theme-swatches"><i v-for="key in ['sidebar','accent','surface'] as const" :key="key" :style="{background:preset.colors[key]}"/></span><span>{{ preset.name }}</span><Check v-if="activePreset===preset.name" :size="12"/></button></div>
-    <div class="theme-fields"><label v-for="field in fields" :key="field.key"><span>{{ field.label }}</span><div class="theme-color-field"><input type="color" v-model="theme[field.key]" :aria-label="field.label+'颜色选择器'"/><input type="text" :value="theme[field.key]" :aria-label="field.label+'十六进制色值'" maxlength="7" spellcheck="false" @change="updateHex(field.key,$event)"/></div></label></div>
-    <p v-if="contrastWarning" class="theme-warning" role="status">部分文字与背景对比度较低，建议调整颜色以方便阅读。</p>
-    <p v-if="saveError" class="theme-warning" role="status">浏览器未能保存配色，本次预览仍然有效。</p>
-    <footer><button class="text-button" @click="theme={...defaults}"><RotateCcw :size="13"/>恢复默认</button><span>实时生效 · 自动保存在当前浏览器</span><button class="button primary small" @click="dialog?.close()">完成</button></footer>
+    <header><div><span class="theme-eyebrow">APPEARANCE</span><h2 id="theme-title">{{ t('自定义配色') }}</h2></div><button class="icon-button" :aria-label="t('关闭配色设置')" @click="dialog?.close()"><X :size="19"/></button></header>
+    <p class="theme-description">{{ t('选择一个起点，再调整成你喜欢的颜色。') }}</p>
+    <div class="theme-presets"><button v-for="preset in presets" :key="preset.name" :aria-pressed="activePreset===preset.name" @click="theme={...preset.colors}"><span class="theme-swatches"><i v-for="key in ['sidebar','accent','surface'] as const" :key="key" :style="{background:preset.colors[key]}"/></span><span>{{ t(preset.name) }}</span><Check v-if="activePreset===preset.name" :size="12"/></button></div>
+    <div class="theme-fields"><label v-for="field in fields" :key="field.key"><span>{{ t(field.label) }}</span><div class="theme-color-field"><input type="color" v-model="theme[field.key]" :aria-label="t(field.label)+t('颜色选择器')"/><input type="text" :value="theme[field.key]" :aria-label="t(field.label)+t('十六进制色值')" maxlength="7" spellcheck="false" @change="updateHex(field.key,$event)"/></div></label></div>
+    <p v-if="contrastWarning" class="theme-warning" role="status">{{ t('部分文字与背景对比度较低，建议调整颜色以方便阅读。') }}</p>
+    <p v-if="saveError" class="theme-warning" role="status">{{ t('浏览器未能保存配色，本次预览仍然有效。') }}</p>
+    <footer><button class="text-button" @click="theme={...defaults}"><RotateCcw :size="13"/>{{ t('恢复默认') }}</button><span>{{ t('实时生效 · 自动保存在当前浏览器') }}</span><button class="button primary small" @click="dialog?.close()">{{ t('完成') }}</button></footer>
   </dialog>
 </template>

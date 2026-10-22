@@ -1,7 +1,7 @@
 # Third-party notices
 
 Clash Studio original project code is licensed under GPL-3.0-only.
-Dependencies keep their respective licenses. Python dependencies are installed separately and are not bundled. The built interface includes Vue and Lucide.
+Dependencies keep their respective licenses. Source packages install Python dependencies separately. Native packages bundle Python, backend dependencies and the built interface; they include a LICENSES directory and DEPENDENCIES.txt with the build environment's notices and versions. The corresponding project source is included in Source/. The built interface includes Vue and Lucide.
 
 ## Vue
 

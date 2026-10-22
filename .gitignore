@@ -14,3 +14,5 @@ releases/
 *.log
 *.pem
 *.key
+build/
+*.spec

@@ -6,18 +6,18 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = json.loads((ROOT / "frontend/package.json").read_text(encoding="utf-8"))["version"]
-NAME = f"ClashStudio-v{VERSION}"
+NAME = f"ClashStudio-v{VERSION}-source"
 OUT = ROOT / "releases"
 OUT.mkdir(exist_ok=True)
 files = [ROOT / name for name in (
     ".gitignore", ".gitattributes", "LICENSE", "THIRD_PARTY_NOTICES.md", "README.md",
-    "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements.txt", "requirements-dev.txt",
-    "run.py", "start.ps1", "stop.ps1", "启动软件.cmd", "停止服务.cmd",
+    "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "requirements.txt", "requirements-dev.txt", "requirements-build.txt", "README.en.md",
+    "run.py", "start.ps1", "stop.ps1", "start.sh", "stop.sh", "Start.command", "Stop.command", "启动软件.cmd", "停止服务.cmd",
     "configure-lan-firewall.ps1", "配置局域网防火墙.cmd", "frontend/package.json",
     "frontend/pnpm-lock.yaml", "frontend/pnpm-workspace.yaml", "frontend/tsconfig.json",
     "frontend/vite.config.ts", "frontend/index.html",
 )]
-allowed = {".py", ".md", ".yaml", ".yml", ".vue", ".ts", ".css", ".html", ".js", ".cjs", ".svg", ".png", ".webp"}
+allowed = {".py", ".md", ".yaml", ".yml", ".vue", ".ts", ".css", ".html", ".js", ".cjs", ".svg", ".png", ".webp", ".json", ".sh", ".command"}
 for folder in ("app", "docs", "examples", "frontend/src", "frontend/dist", "tests", "scripts", ".github"):
     files.extend(p for p in (ROOT / folder).rglob("*")
                  if p.is_file() and p.suffix in allowed and "__pycache__" not in p.parts)
@@ -31,7 +31,15 @@ manifest = "".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_t
 output = OUT / f"{NAME}.zip"
 with ZipFile(output, "w", ZIP_DEFLATED) as archive:
     for file in files:
-        archive.write(file, Path(NAME) / file.relative_to(ROOT))
+        entry = Path(NAME) / file.relative_to(ROOT)
+        if file.suffix in {".sh", ".command"}:
+            from zipfile import ZipInfo
+            info = ZipInfo.from_file(file, str(entry))
+            info.create_system = 3
+            info.external_attr = 0o100755 << 16
+            archive.writestr(info, file.read_bytes(), compress_type=ZIP_DEFLATED)
+        else:
+            archive.write(file, entry)
     archive.writestr(f"{NAME}/MANIFEST.sha256", manifest)
 digest = hashlib.sha256(output.read_bytes()).hexdigest()
 (OUT / f"{NAME}.sha256").write_text(f"{digest}  {output.name}\n", encoding="ascii")
