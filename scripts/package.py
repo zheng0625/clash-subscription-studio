@@ -17,7 +17,7 @@ files = [ROOT / name for name in (
     "frontend/pnpm-lock.yaml", "frontend/pnpm-workspace.yaml", "frontend/tsconfig.json",
     "frontend/vite.config.ts", "frontend/index.html",
 )]
-allowed = {".py", ".md", ".yaml", ".yml", ".vue", ".ts", ".css", ".html", ".js", ".cjs", ".svg"}
+allowed = {".py", ".md", ".yaml", ".yml", ".vue", ".ts", ".css", ".html", ".js", ".cjs", ".svg", ".png", ".webp"}
 for folder in ("app", "docs", "examples", "frontend/src", "frontend/dist", "tests", "scripts", ".github"):
     files.extend(p for p in (ROOT / folder).rglob("*")
                  if p.is_file() and p.suffix in allowed and "__pycache__" not in p.parts)
